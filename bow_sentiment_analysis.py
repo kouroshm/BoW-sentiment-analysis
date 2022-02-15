@@ -9,7 +9,7 @@ from sklearn.metrics import classification_report
 from sklearn.linear_model import SGDClassifier
 
 # Preprocessing
-OUTPUT_FOLDER = 'input the directory of your outputfolder'
+OUTPUT_FOLDER = 'input the directory of your outputfolder' # Change the directory to your directory
 data = pd.read_csv('/data/reviews.csv', delimiter='\t', header=None)
 data.rename(columns={0: 'Company Name', 1: 'Rating', 2: 'Date Published',
                         3: 'Review Body'}, inplace=True)
@@ -21,6 +21,10 @@ print(data['Rating'].value_counts())
 
 
 def map_sentiment(rating):
+    '''The ratings are mapped to the sentiments.
+    returning 0: a negative review
+    returning 1: a neutral review
+    returning 2: a positive review'''
 
     if rating <= 2:
         return 0
@@ -34,6 +38,8 @@ data['sentiment'] = [map_sentiment(int(i)) for i in data['Rating']]
 
 
 def top_data(n_samples):
+    '''The function concatinate the top n_samples of 
+    positive, neutral, and negative sentiments.'''
     top_positive = data[data['sentiment'] == 2].head(n_samples)
     top_neutral = data[data['sentiment'] == 1].head(n_samples)
     top_negative = data[data['sentiment'] == 0].head(n_samples)
